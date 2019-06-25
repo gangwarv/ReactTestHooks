@@ -1,39 +1,51 @@
 import React, { Component } from 'react';
-import store from '../store/store';
-import { addTodo } from './../actions/todoActions';
+import { connect } from 'react-redux';
+import { toggleTodo, fetchAll } from '../actions/todoActions';
 
 class List extends Component {
-    constructor() {
-        super();
-        store.subscribe(() => {
-            console.log('subscribed ', store.getState());
-            this.setState({
-                todos: [...store.getState().todos]
-            })
-        });
-        this.state = {
-            todos: [
-            ]
-        };
+    em = ':smile:';
+    constructor(props) {
+        super(props);
+        //props.add()
     }
-    add = () => {
-        store.dispatch(addTodo(this.state.text));
-        this.setState({ text: '' });
-    }
-    onChange = (e) => {
-        this.setState({ text: e.target.value });
+    componentDidMount() {
+        // fetch('/todos.json')
+        //     .then(res => res.json())
+        //     .then(d => {
+        //         //console.log(d);
+        //         this.props.add(d[0].name);
+        //         this.props.add(d[1].name);
+        //     })
     }
     render() {
         return (
-            <div>
-                <ul>
-                    {this.state.todos.map((e, i) => <li key={i}><input type="checkbox" readOnly checked={e.completed} /> {e.name} </li>)}
-                </ul>
-                <input type="text" onChange={this.onChange}/>
-                <button onClick={this.add}>Add</button>
-            </div >
+            <div className="row">
+                <div className="col-sm-12">
+                    {this.em}
+                    <ul>
+                        {this.props.todos.map((e, i) => <li key={i}><input type="checkbox" checked={e.completed}
+                            onChange={(e) => this.props.onToggle(i)} /> {e.name} </li>)}
+                    </ul>
+                </div>
+            </div>
         )
     }
 }
 
-export default List;
+
+const mapStateToProps = (state) => {
+    return {
+        todos: state.todos
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onToggle: function (index) {
+            dispatch(toggleTodo(index));
+        },
+        add: function(){
+            dispatch(fetchAll());
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -6,10 +6,8 @@ import * as serviceWorker from './serviceWorker';
 
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import todoReducer from './reducers/todoReducer';
+import store from './store/store';
 
-const store = createStore(todoReducer);
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
