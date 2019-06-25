@@ -5,6 +5,6 @@
     },
     {
         "name":"Second Todo",
-        "completed": false
+        "completed": true
     }
 ]

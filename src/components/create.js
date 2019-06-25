@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addTodo } from './../actions/todoActions';
+import { Link } from 'react-router-dom';
 
 class Create extends Component {
     text = "";
@@ -13,7 +14,10 @@ class Create extends Component {
                 <div className="col-sm-4 form-group">
                     <input type="text" className="form-control" onChange={this.onChange} />
                 </div>
-                <button onClick={_ => this.props.add(this.text)} className="btn btn-default">Add</button>
+                <div className="col-sm-3">
+                    <button onClick={_ => this.props.add(this.text)} className="btn btn-default">Add</button>
+                </div>
+                <Link to="/">list</Link>
             </div>
         )
     }
@@ -28,7 +32,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         add: function (text) {
-            dispatch(addTodo(text));
+            let res;
+            if (text)
+                res = dispatch(addTodo(text));
+            console.log('dispatched ', this, res);
+            this.history.push('/');
         }
     }
 }
